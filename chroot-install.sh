@@ -1,3 +1,8 @@
+# ARGS:
+# DRIVE
+# USER
+# PASS
+
 ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 
 hwclock --systohc
@@ -33,7 +38,7 @@ useradd -m -G wheel -s /bin/zsh $2
 
 echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
 
-echo "root:123" | chpasswd
+echo "root:$3" | chpasswd
 echo "$2:$3"    | chpasswd
 
 echo "$2" > /etc/hostname
