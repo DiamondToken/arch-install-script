@@ -29,7 +29,7 @@ else
 fi
 
 
-pacstrap /mnt base base-devel linux linux-firmware vim grub efibootmgr os-prober dhcpcd zsh git stow
+pacstrap /mnt base base-devel linux linux-firmware vim grub efibootmgr os-prober dhcpcd zsh git stow make
 
 genfstab -U /mnt >> /mnt/etc/fstab
 

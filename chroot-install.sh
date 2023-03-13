@@ -3,6 +3,10 @@
 # USER
 # PASS
 
+DRIVE=$1
+USER=$2
+PASS=$3
+
 ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 
 hwclock --systohc
@@ -18,7 +22,7 @@ locale-gen
 
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
-echo "$2" > /etc/hostname
+echo "$USER" > /etc/hostname
 
 mkinitcpio -P
 
@@ -27,20 +31,26 @@ mkinitcpio -P
 
 if [ "$(ls /sys/firmware/efi/efivars)" ] # uefi
 then
-    grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi $1
+    grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi $DRIVE
     grub-mkconfig -o /boot/grub/grub.cfg
 else                                     # bios
-    grub-install $1
+    grub-install $DRIVE
     grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-useradd -m -G wheel -s /bin/zsh $2
+useradd -m -G wheel -s /bin/zsh $USER
 
 echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
 
-echo "root:$3" | chpasswd
-echo "$2:$3"    | chpasswd
+echo "root:$PASS" | chpasswd
+echo "$USER:$PASS"    | chpasswd
 
-echo "$2" > /etc/hostname
+echo "$USER" > /etc/hostname
 
 systemctl enable dhcpcd
+systemctl start dhcpcd
+
+git clone https://github.com/DiamondToken/dwm.git "/home/$USER/dwm"
+git clone https://github.com/DiamondToken/dotfiles.git "/home/$USER/dotfiles"
+git clone https://github.com/DiamondToken/st-diamond.git "/home/$USER/st"
+git clone https://github.com/DiamondToken/dmenu-diamond.git "/home/$USER/dmenu"
