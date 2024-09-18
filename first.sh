@@ -3,12 +3,11 @@
 
 DRIVE=$1
 USER=$2
-PASSWORD=$3
-
+PASS=$3
 
 make_bios()
 {
-    local $1 #1 drive;
+    #1 drive;
 
     echo "ARG is: $1"
 
@@ -24,8 +23,8 @@ make_bios()
 
 make_efi()
 {
-    local $1 # drive
-    local $2 # target
+     # $1 # drive
+     # $2 # target
 
     parted --script $1 \
            mklabel gpt \
@@ -47,10 +46,8 @@ if_uefi()
 
 if_uefi && make_efi || make_bios $DRIVE
 
-
-pacstrap /mnt base base-devel linux linux-firmware vim grub # efibootmgr os-prober dhcpcd zsh git stow make
+pacstrap /mnt base base-devel linux linux-firmware vim grub efibootmgr os-prober dhcpcd zsh zsh-syntax-highlighting git stow make
 genfstab -U /mnt >> /mnt/etc/fstab
 
 cp chroot-install.sh /mnt/
 arch-chroot /mnt "/bin/bash" "./chroot-install.sh" "$DRIVE" "$USER" "$PASS"
-

@@ -26,8 +26,6 @@ echo "$USER" > /etc/hostname
 
 mkinitcpio -P
 
-# read -t 1 -n 1000000 discard      # discard previous input
-
 
 if [ "$(ls /sys/firmware/efi/efivars)" ] # uefi
 then
@@ -42,15 +40,19 @@ useradd -m -G wheel -s /bin/zsh $USER
 
 echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
 
-echo "root:$PASS" | chpasswd
-echo "$USER:$PASS"    | chpasswd
+echo "root:$PASS"  | chpasswd
+echo "$USER:$PASS" | chpasswd
 
 echo "$USER" > /etc/hostname
 
 systemctl enable dhcpcd
-systemctl start dhcpcd
+systemctl start  dhcpcd
 
-git clone https://github.com/DiamondToken/dwm.git "/home/$USER/dwm"
-git clone https://github.com/DiamondToken/dotfiles.git "/home/$USER/dotfiles"
-git clone https://github.com/DiamondToken/st-diamond.git "/home/$USER/st"
+git clone https://github.com/DiamondToken/dwm.git           "/home/$USER/dwm"
+git clone -b flood_again https://github.com/DiamondToken/dotfiles.git      "/home/$USER/dotfiles"
+git clone https://github.com/DiamondToken/st-diamond.git    "/home/$USER/st"
 git clone https://github.com/DiamondToken/dmenu-diamond.git "/home/$USER/dmenu"
+
+
+sudo ./home/$USER/dotfiles/stowing.sh root
+./home/$USER/dotfiles/stowing.sh stash
