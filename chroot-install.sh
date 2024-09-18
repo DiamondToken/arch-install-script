@@ -56,8 +56,8 @@ git clone https://github.com/DiamondToken/dmenu-diamond.git "/home/$USER/dmenu"
 
 cd /home/$USER/dotfiles/
 
-sudo ./stowing.sh root
-sudo su -u $USER ./stowing.sh stash
+sudo     /home/$USER/dotfiles/stowing.sh root
+su $USER /home/$USER/dotfiles/stowing.sh stash
 
 
 # sudo ./home/$USER/dotfiles/stowing.sh root
